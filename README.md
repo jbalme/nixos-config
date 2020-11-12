@@ -1,0 +1,1 @@
+A simple, modular Nix flake which builds the configuration for my personal computers, currently running NixOS.
