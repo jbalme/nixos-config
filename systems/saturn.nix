@@ -13,7 +13,7 @@ nixosSystem {
     hardware.cpu.intel
     hardware.disks.boot
     hardware.disks.zfs
-    hardware.gpu.nvidia
+    hardware.gpu.amd
     hardware.peripherals.cm-storm-devastator
     hardware.peripherals.ratbag
     services.kubernetes.single-node-cluster
