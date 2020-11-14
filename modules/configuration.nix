@@ -85,15 +85,28 @@ with lib; {
         enable = true;
         middleEmulation = false;
       };
-      displayManager.session = [{
-        name = "xsession";
-        manage = "desktop";
-        start = ''
-          ${pkgs.runtimeShell} $HOME/.xsession &
-          waitPID=$!
-        '';
-      }];
+      displayManager = {
+        session = [{
+          name = "xsession";
+          manage = "desktop";
+          start = ''
+            ${pkgs.runtimeShell} $HOME/.xsession &
+            waitPID=$!
+          '';
+        }];
+        defaultSession = "xsession";
+        autoLogin = {
+          enable = true;
+          user = "user";
+        };
+      };
+
+      displayManager.session = [ { } ];
       displayManager.defaultSession = "xsession";
+      displayManager.autoLogin = {
+        enable = true;
+        user = "user";
+      };
     };
 
     # Virtual Filesystem service
