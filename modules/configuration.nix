@@ -100,13 +100,6 @@ with lib; {
           user = "user";
         };
       };
-
-      displayManager.session = [ { } ];
-      displayManager.defaultSession = "xsession";
-      displayManager.autoLogin = {
-        enable = true;
-        user = "user";
-      };
     };
 
     # Virtual Filesystem service
