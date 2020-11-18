@@ -15,7 +15,7 @@
   };
 
   fileSystems = {
-    "boot" = {
+    "/boot" = {
       device = "/dev/disk/by-partlabel/EFIBOOT";
       fsType = "vfat";
     };
