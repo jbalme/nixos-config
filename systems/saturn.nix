@@ -16,7 +16,7 @@ nixosSystem {
     hardware.gpu.amd
     hardware.peripherals.cm-storm-devastator
     hardware.peripherals.ratbag
-    services.kubernetes.single-node-cluster
+    services.kubernetes.k3s
     home-manager.nixosModules.home-manager
     configuration
   ];
