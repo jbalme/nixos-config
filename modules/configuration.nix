@@ -121,6 +121,9 @@ with lib; {
       };
     };
 
+    # ZSH autocompletion for system packages
+    environment.pathsToLink = [ "/share/zsh" ];
+
     # Users
     users.users.user = {
       isNormalUser = true;
