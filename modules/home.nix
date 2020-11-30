@@ -8,6 +8,12 @@ with lib; {
 
     # communications
     zoom-us
+    discord
+    element-desktop
+
+    # vidya
+    steam
+    steam-run
 
     # virtualization
     virt-manager
