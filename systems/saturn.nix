@@ -9,6 +9,7 @@ nixosSystem {
       networking.hostId = "b988b583";
       system.stateVersion = "20.09";
       nix.maxJobs = 8;
+      boot.zfs.extraPools = ["tank"];
     }
     hardware.cpu.intel
     hardware.disks.boot
