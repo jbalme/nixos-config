@@ -4,12 +4,13 @@ nixosSystem {
   system = "x86_64-linux";
   modules = with self.nixosModules; [
     {
-      system.configurationRevision = mkIf (self ? rev) self.rev;
+      boot.zfs.extraPools = [ "tank" ];
       networking.hostName = "saturn";
       networking.hostId = "b988b583";
-      system.stateVersion = "20.09";
+      networking.firewall.allowedTCPPorts = [ 6443 ];
       nix.maxJobs = 8;
-      boot.zfs.extraPools = ["tank"];
+      system.configurationRevision = mkIf (self ? rev) self.rev;
+      system.stateVersion = "20.09";
     }
     hardware.cpu.intel
     hardware.disks.boot
