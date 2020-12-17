@@ -19,6 +19,9 @@ with lib; {
     # Enable the magic SysRq key / 3-finger salute.
     boot.kernel.sysctl."kernel.sysrq" = 1;
 
+    # Support Windows filesystems.
+    boot.supportedFilesystems = [ "ntfs" "exfat" ];
+
     # Audio support
     sound.enable = true;
     hardware.pulseaudio = {
