@@ -2,7 +2,7 @@
 {
   services.k3s = {
     enable = true;
-    extraFlags = "--no-deploy traefik";
+    extraFlags = "--disable traefik,local-storage";
   };
   
   # https://github.com/NixOS/nixpkgs/issues/103158
