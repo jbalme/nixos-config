@@ -7,7 +7,7 @@ nixosSystem {
       boot.zfs.extraPools = [ "tank" ];
       networking.hostName = "saturn";
       networking.hostId = "b988b583";
-      networking.firewall.allowedTCPPorts = [ 6443 ];
+      networking.firewall.allowedTCPPorts = [ 80 443 6443 ];
       nix.maxJobs = 8;
       system.configurationRevision = mkIf (self ? rev) self.rev;
       system.stateVersion = "20.09";
