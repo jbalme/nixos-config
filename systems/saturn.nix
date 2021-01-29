@@ -3,6 +3,7 @@ with nixpkgs.lib;
 nixosSystem {
   system = "x86_64-linux";
   modules = with self.nixosModules; [
+    common
     {
       boot.zfs.extraPools = [ "tank" ];
       networking.hostName = "saturn";

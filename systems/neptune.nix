@@ -3,6 +3,7 @@ with nixpkgs.lib;
 nixosSystem {
   system = "x86_64-linux";
   modules = with self.nixosModules; [
+    common
     {
       system.configurationRevision = mkIf (self ? rev) self.rev;
       networking.hostName = "neptune";
