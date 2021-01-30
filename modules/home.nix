@@ -75,7 +75,17 @@ with lib; {
     enable = true;
     package = pkgs.ungoogled-chromium.override { enableVaapi = true; };
   };
-  home.sessionVariables.BROWSER = "chromium";
+  home.sessionVariables.BROWSER = "firefox";
+
+  programs.firefox = {
+    enable = true;
+    extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      ublock-origin
+      browserpass
+    ];
+    profiles.default = {};
+
+  };
 
   # terminal
   programs.alacritty = {
