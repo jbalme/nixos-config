@@ -6,7 +6,7 @@
     # ungoogled-chromium frequently fails on hydra, let's pin it separately
     nixpkgs-chromium.url = "github:NixOS/nixpkgs/nixos-20.09";
     home-manager.url = "github:nix-community/home-manager/release-20.09";
-    nur.url = github:nix-community/NUR;
+    nur.url = "github:nix-community/NUR";
   };
 
   outputs = { self, nixpkgs, nixpkgs-chromium, home-manager, nur, ... }@inputs:
@@ -27,7 +27,8 @@
         common = {
           nixpkgs.overlays = [
             (this: super: {
-              ungoogled-chromium = nixpkgs-chromium.legacyPackages.${super.system}.ungoogled-chromium;
+              ungoogled-chromium =
+                nixpkgs-chromium.legacyPackages.${super.system}.ungoogled-chromium;
             })
             nur.overlay
           ];

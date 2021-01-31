@@ -75,7 +75,6 @@ with lib; {
     enable = true;
     package = pkgs.ungoogled-chromium.override { enableVaapi = true; };
   };
-  home.sessionVariables.BROWSER = "firefox";
 
   programs.firefox = {
     enable = true;
@@ -83,9 +82,18 @@ with lib; {
       ublock-origin
       browserpass
     ];
-    profiles.default = {};
-
+    profiles.default = {
+      extraConfig = let
+        userjs = pkgs.fetchFromGitHub {
+          owner = "jbalme";
+          repo = "user.js";
+          rev = "76ba6f3c06c0884f4e05fb15388924262b69d6d6";
+          sha256 = "sha256-LgU0Msllzc5SIY2JV4SWUCSk2Z4cmHNm0xk/8slYNpc=";
+        };
+      in builtins.readFile "${userjs}/user.js";
+    };
   };
+  home.sessionVariables.BROWSER = "firefox";
 
   # terminal
   programs.alacritty = {
@@ -115,16 +123,6 @@ with lib; {
       theme = "awesomepanda";
     };
     enableCompletion = true;
-    plugins = [{
-      name = "zsh-nix-shell";
-      file = "nix-shell.plugin.zsh";
-      src = pkgs.fetchFromGitHub {
-        owner = "chisui";
-        repo = "zsh-nix-shell";
-        rev = "v0.1.0";
-        sha256 = "0snhch9hfy83d4amkyxx33izvkhbwmindy0zjjk28hih1a9l2jmx";
-      };
-    }];
   };
 
   # direnv
@@ -154,8 +152,8 @@ with lib; {
       src = pkgs.fetchFromGitHub {
         owner = "jbalme";
         repo = "dwm";
-        rev = "9dcd0c4b84285fa5ae8377b81a0c1b1aee474e08";
-        sha256 = "sha256-SXdhXS07FwodCXcA2ciKNp5K5sZY2el2dFy/TnxNNf0=";
+        rev = "2e8028bcfda24bf430dc5d73a1987097fc0cc87d";
+        sha256 = "sha256-uKTvxlQaJEDQpwiND3/7I8YjqsfHew+zml7QilPUuvw=";
       };
     });
   in "${dwm}/bin/dwm";
