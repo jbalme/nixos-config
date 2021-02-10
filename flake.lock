@@ -33,18 +33,18 @@
         "type": "indirect"
       }
     },
-    "nixpkgs-chromium": {
+    "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1612004791,
-        "narHash": "sha256-WmfkXXkmDoVmEXImIYk7vd3tBbLLElFU+zOH56lctRE=",
+        "lastModified": 1611575689,
+        "narHash": "sha256-z2rNP3zdVnGxp9iV2Rbn0/LLKhk47DZQKxDkpYFLI7M=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a5f9e304d4a804b0855c9a805c5ee43b8399bff7",
+        "rev": "891f607d5301d6730cb1f9dcf3618bcb1ab7f10e",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-20.09",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -84,7 +84,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-chromium": "nixpkgs-chromium",
+        "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur"
       }
     }

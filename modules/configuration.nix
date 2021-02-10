@@ -32,7 +32,25 @@ with lib; {
                 set-default-sink ec_sink
                 set-default-source ec_source
             '';
+      extraModules = [ pkgs.pulseaudio-modules-bt ];
+      package = pkgs.pulseaudioFull;
     };
+
+    hardware.bluetooth.enable = true;
+    services.blueman.enable = true;
+    services.ofono.enable = true;
+
+    environment.etc."ofono/phonesim.conf" = {
+      text = ''
+        [phonesim]
+        Driver=phonesim
+        Address=127.0.0.1
+        Port=12345
+      '';
+
+      mode = "0444";
+    };
+
 
     # Graphics support
     hardware.opengl = rec {

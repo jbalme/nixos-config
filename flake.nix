@@ -3,13 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
-    # ungoogled-chromium frequently fails on hydra, let's pin it separately
-    nixpkgs-chromium.url = "github:NixOS/nixpkgs/nixos-20.09";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-20.09";
     nur.url = "github:nix-community/NUR";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-chromium, home-manager, nur, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs:
     with nixpkgs.lib // builtins; {
 
       # Pull in all modules from ./modules
@@ -26,9 +25,10 @@
       in dToA ./modules // {
         common = {
           nixpkgs.overlays = [
-            (this: super: {
-              ungoogled-chromium =
-                nixpkgs-chromium.legacyPackages.${super.system}.ungoogled-chromium;
+            (this: super: rec {
+              unstable =
+                nixpkgs-unstable.legacyPackages.${super.system};
+              ofono = unstable.ofono;
             })
             nur.overlay
           ];

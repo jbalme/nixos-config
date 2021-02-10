@@ -161,6 +161,7 @@ with lib; {
   # autostart
   xsession.initExtra = with pkgs; ''
     ${mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1 &
+    ${blueman}/bin/blueman-tray &
     ${discord}/bin/Discord --start-minimized &
     ${element-desktop}/bin/element-desktop --hidden &
     ${steam}/bin/steam -silent &
