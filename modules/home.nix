@@ -47,6 +47,9 @@ with lib; {
     # text tools
     pandoc
     tectonic
+
+    # dotnet
+    unstable.dotnet-sdk_5
   ];
 
   # git
@@ -110,12 +113,43 @@ with lib; {
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
+    extensions = 
+    let
+      ext = pkgs.vscode-utils.buildVscodeMarketplaceExtension;
+      asvetliakov.vscode-neovim = ext {
+        mktplcRef = {
+          name = "vscode-neovim";
+          publisher = "asvetliakov";
+          version = "0.0.78";
+          sha256 = "sha256-dyXuMITHoLZBOYtLo4Jknf4TkeCysiNGQWkqxMPlfyg=";
+        };
+      };
+
+      ms-dotnettools.csharp2 = ext {
+        mktplcRef = {
+          name = "csharp";
+          publisher = "ms-dotnettools";
+          version = "1.23.9";
+          sha256 = "sha256-5G3u3eqzaqP794E/i7aj4UCO6HAifGwnRKsVaFT3CZg=";
+        };
+      };
+    in
+    with unstable.vscode-extensions;
+    [
+      asvetliakov.vscode-neovim
+      ms-dotnettools.csharp
+    ];
+
+    userSettings = {
+      "vscode-neovim.neovimExecutablePaths.linux" = "${pkgs.neovim-git}/bin/nvim";
+      "omnisharp.path" = "${pkgs.unstable.omnisharp-roslyn}/bin/omnisharp";
+    };
   };
 
   home.sessionVariables.EDITOR = "codium";
   home.sessionVariables.SUDO_EDITOR = "codium -w";
 
-  # shell
+
   programs.zsh = {
     enable = true;
     oh-my-zsh = {

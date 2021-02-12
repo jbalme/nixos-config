@@ -2,15 +2,16 @@
   description = "My personal NixOS configuration";
 
   inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-20.09";
     nur.url = "github:nix-community/NUR";
+    neovim.url = "github:neovim/neovim?dir=contrib";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nur, ... }@inputs:
-    with nixpkgs.lib // builtins; {
-
+  outputs = { self, flake-utils, nixpkgs, nixpkgs-unstable, home-manager, nur, neovim, ... }@inputs:
+    with flake-utils // nixpkgs.lib // builtins; {
       # Pull in all modules from ./modules
       nixosModules = let
         dToA = dir:
@@ -26,9 +27,16 @@
         common = {
           nixpkgs.overlays = [
             (this: super: rec {
-              unstable =
-                nixpkgs-unstable.legacyPackages.${super.system};
+              unfree = import "${nixpkgs}" {
+                system = super.system;
+                config.allowUnfree = true;
+              };
+              unstable = import "${nixpkgs-unstable}" {
+                system = super.system;
+                config.allowUnfree = true;
+              };
               ofono = unstable.ofono;
+              neovim-git = neovim.defaultPackage.${super.system};
             })
             nur.overlay
           ];
