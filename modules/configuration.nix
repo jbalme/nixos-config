@@ -129,6 +129,23 @@ with lib; {
     # Fix for pinentry-gnome3
     services.dbus.packages = with pkgs; [ gcr ];
 
+    programs.dconf.enable=true;
+    services.gnome3.evolution-data-server.enable = true;
+    services.gnome3.gnome-online-accounts.enable = true;
+    services.gnome3.gnome-keyring.enable = true;
+
+    fonts.fonts = with pkgs; [
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      liberation_ttf
+      fira-code
+      fira-code-symbols
+      corefonts
+      vistafonts
+      winePackages.fonts
+    ];
+
     # Power Management
     services.upower.enable = true;
 

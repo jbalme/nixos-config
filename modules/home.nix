@@ -137,7 +137,7 @@ with lib; {
     with unstable.vscode-extensions;
     [
       asvetliakov.vscode-neovim
-      ms-dotnettools.csharp
+      #ms-dotnettools.csharp
     ];
 
     userSettings = {
@@ -194,10 +194,11 @@ with lib; {
 
   # autostart
   xsession.initExtra = with pkgs; ''
-    ${mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1 &
-    ${blueman}/bin/blueman-tray &
-    ${discord}/bin/Discord --start-minimized &
-    ${element-desktop}/bin/element-desktop --hidden &
-    ${steam}/bin/steam -silent &
+    #${mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1 &
+    #${blueman}/bin/blueman-tray &
+    #${discord}/bin/Discord --start-minimized &
+    #${element-desktop}/bin/element-desktop --hidden &
+    #${steam}/bin/steam -silent &
+    ${dex}/bin/dex --autostart
   '';
 }
