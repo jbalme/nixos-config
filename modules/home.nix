@@ -26,11 +26,11 @@ with lib; {
     mate-polkit
 
     # apps
-    engrampa
-    caja-with-extensions
-    atril
-    eom
-    mate-calc
+    #engrampa
+    #caja-with-extensions
+    #atril
+    #eom
+    #mate-calc
 
     # media tools
     youtube-dl

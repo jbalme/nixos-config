@@ -7,6 +7,15 @@ with lib; {
       extraOptions = "experimental-features = nix-command flakes";
     };
 
+    environment.systemPackages = with pkgs.gnome3; [
+      nautilus
+      evince
+      gnome-calculator
+      gnome-logs
+      file-roller
+      eog
+    ];
+
     # Allow Unfree packages (needed for ZeroTier)
     nixpkgs.config.allowUnfree = true;
 
