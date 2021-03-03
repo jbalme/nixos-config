@@ -7,9 +7,12 @@
     };
 
     initrd = {
-      luks.devices.crypt0.device = "/dev/disk/by-partlabel/LINUX";
+      luks.devices.crypt0 = {
+        device = "/dev/disk/by-partlabel/LINUX";
+        allowDiscards = true;
+      };
       availableKernelModules =
-        [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+        [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "nvme" ];
       kernelModules = [ "dm-snapshot" ];
     };
   };

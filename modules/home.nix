@@ -112,7 +112,7 @@ with lib; {
   # editor
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
+    package = pkgs.vscode;
     extensions = 
     let
       ext = pkgs.vscode-utils.buildVscodeMarketplaceExtension;
@@ -133,22 +133,44 @@ with lib; {
           sha256 = "sha256-5G3u3eqzaqP794E/i7aj4UCO6HAifGwnRKsVaFT3CZg=";
         };
       };
+      redhat.java = ext {
+        mktplcRef = {
+          name = "java";
+          publisher = "redhat";
+          version = "0.75.0";
+          sha256 = "sha256-cXjCndW1izhKAMARIFQv45Ar8tZds+rZiRYvIZiIzyo=";
+        };
+      };
     in
-    with unstable.vscode-extensions;
+    with pkgs.unstable.vscode-extensions;
     [
-      asvetliakov.vscode-neovim
+      #asvetliakov.vscode-neovim
       #ms-dotnettools.csharp
+      #vscodevim.vim
+      #bbenoist.Nix 
+      #ms-python.vscode-pylance
+      #redhat.vscode-yaml
+      #redhat.java
+      #matklad.rust-analyzer
     ];
 
     userSettings = {
       "vscode-neovim.neovimExecutablePaths.linux" = "${pkgs.neovim-git}/bin/nvim";
       "omnisharp.path" = "${pkgs.unstable.omnisharp-roslyn}/bin/omnisharp";
+      "java.home" = "${pkgs.jdk11}";
+      "maven.executable.path" = "${pkgs.maven}/bin/mvn";
+      "files.exclude" = {
+        "**/.classpath" = true;
+        "**/.project" = true;
+        "**/.settings" = true;
+        "**/.factorypath" = true;
+      };
     };
   };
 
-  home.sessionVariables.EDITOR = "codium";
-  home.sessionVariables.SUDO_EDITOR = "codium -w";
-
+  home.sessionVariables.EDITOR = "code";
+  home.sessionVariables.SUDO_EDITOR = "code -w";
+  home.sessionVariables.GIT_EDITOR = "code -w";
 
   programs.zsh = {
     enable = true;
@@ -201,4 +223,6 @@ with lib; {
     #${steam}/bin/steam -silent &
     ${dex}/bin/dex --autostart
   '';
+
+  manual.manpages.enable = false;
 }
