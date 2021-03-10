@@ -154,21 +154,35 @@ with lib; {
       #matklad.rust-analyzer
     ];
 
-    userSettings = {
-      "vscode-neovim.neovimExecutablePaths.linux" = "${pkgs.neovim-git}/bin/nvim";
-      "omnisharp.path" = "${pkgs.unstable.omnisharp-roslyn}/bin/omnisharp";
-      "java.home" = "${pkgs.jdk11}";
-      "maven.executable.path" = "${pkgs.maven}/bin/mvn";
-      "files.exclude" = {
+    userSettings = rec {
+      vscode-neovim.neovimExecutablePaths.linux = "${pkgs.neovim-git}/bin/nvim";
+      omnisharp.path = "${pkgs.unstable.omnisharp-roslyn}/bin/omnisharp";
+      java = {
+        home = "${pkgs.jdk11}";
+        configuration.runtimes = [
+          {
+            name = "JavaSE-1.8";
+            path = "${pkgs.jdk}";
+          }
+        ];
+        project.importOnFirstTimeStartup = "automatic";
+      };
+      spring-boot.ls.java.home = java.home;
+      maven.executable.path = "${pkgs.maven}/bin/mvn";
+      files.exclude = {
         "**/.classpath" = true;
         "**/.project" = true;
         "**/.settings" = true;
         "**/.factorypath" = true;
       };
+      editor.suggestSelection = "first";
+      workbench.colorTheme = "Gruvbox Dark Medium";
+      editor.fontFamily = "'Fira Code', 'monospace'";
+      editor.fontLigatures = "true";
     };
   };
 
-  home.sessionVariables.EDITOR = "code";
+  home.sessionVariables.EDITOR = "code -w";
   home.sessionVariables.SUDO_EDITOR = "code -w";
   home.sessionVariables.GIT_EDITOR = "code -w";
 

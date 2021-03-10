@@ -78,7 +78,11 @@ with lib; {
 
     # Networking
     networking = {
-      firewall = { enable = true; };
+      firewall = { enable = false; 
+        allowedTCPPorts = [
+          8080
+        ];
+      };
       networkmanager.enable = true;
       useDHCP = false; # legacy flag
     };
