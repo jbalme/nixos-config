@@ -34,7 +34,7 @@ with lib; {
     # Audio support
     sound.enable = true;
     hardware.pulseaudio = {
-      enable = true;
+      enable = false;
       support32Bit = true;
       extraConfig = ''
         	    load-module module-echo-cancel use_master_format=1 aec_method=webrtc aec_args="analog_gain_control=0\ digital_gain_control=1\ noise_suppression=1\ voice_detection=1" source_name=ec_source sink_name=ec_sink
@@ -43,6 +43,16 @@ with lib; {
             '';
       extraModules = [ pkgs.pulseaudio-modules-bt ];
       package = pkgs.pulseaudioFull;
+    };
+
+    services.pipewire = {
+      enable = true;
+      pulse.enable = true;
+      jack.enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
     };
 
     hardware.bluetooth.enable = true;
