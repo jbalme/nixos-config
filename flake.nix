@@ -3,14 +3,16 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-20.09";
+    home-manager.url = "github:nix-community/home-manager/master";
     nur.url = "github:nix-community/NUR";
     neovim.url = "github:neovim/neovim?dir=contrib";
+    dwm-status.url = "github:Gerschtli/dwm-status/master";
+    dwm-status.flake = false;
   };
 
-  outputs = { self, flake-utils, nixpkgs, nixpkgs-unstable, home-manager, nur, neovim, ... }@inputs:
+  outputs = { self, flake-utils, nixpkgs, nixpkgs-unstable, home-manager, nur, neovim, dwm-status, ... }@inputs:
     with flake-utils // nixpkgs.lib // builtins; {
       # Pull in all modules from ./modules
       nixosModules = let
@@ -26,16 +28,11 @@
       in dToA ./modules // {
         common = {
           nixpkgs.overlays = [
-            (this: super: rec {
+            (this: super: {
               unfree = import "${nixpkgs}" {
                 system = super.system;
                 config.allowUnfree = true;
               };
-              unstable = import "${nixpkgs-unstable}" {
-                system = super.system;
-                config.allowUnfree = true;
-              };
-              ofono = unstable.ofono;
               neovim-git = neovim.defaultPackage.${super.system};
             })
             nur.overlay

@@ -117,7 +117,7 @@ with lib; {
       enable = true;
       libinput = {
         enable = true;
-        middleEmulation = false;
+        mouse.middleEmulation = false;
       };
       displayManager = {
         session = [{

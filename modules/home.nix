@@ -49,7 +49,7 @@ with lib; {
     tectonic
 
     # dotnet
-    unstable.dotnet-sdk_5
+    dotnet-sdk_5
   ];
 
   # git
@@ -142,7 +142,7 @@ with lib; {
         };
       };
     in
-    with pkgs.unstable.vscode-extensions;
+    with pkgs.vscode-extensions;
     [
       #asvetliakov.vscode-neovim
       #ms-dotnettools.csharp
@@ -156,13 +156,13 @@ with lib; {
 
     userSettings = rec {
       vscode-neovim.neovimExecutablePaths.linux = "${pkgs.neovim-git}/bin/nvim";
-      omnisharp.path = "${pkgs.unstable.omnisharp-roslyn}/bin/omnisharp";
+      omnisharp.path = "${pkgs.omnisharp-roslyn}/bin/omnisharp";
       java = {
         home = "${pkgs.jdk11}";
         configuration.runtimes = [
           {
             name = "JavaSE-1.8";
-            path = "${pkgs.jdk}";
+            path = "${pkgs.jdk8}";
           }
         ];
         project.importOnFirstTimeStartup = "automatic";
@@ -205,9 +205,38 @@ with lib; {
   programs.mpv = { enable = true; };
 
   # status bar
+ # services.dwm-status = {
+ #   enable = true;
+ #   order = [ "time" ];
+ #   package = pkgs.dwm-status.overrideAttrs (super: rec {
+ #     name = "dwm-status-git";
+ #     version = "12474e948d72ca102bb8e35b2769c53e9c9f7ec4";
+ #     src = pkgs.fetchFromGitHub {
+ #       owner = "Gerschtli";
+ #       repo = "dwm-status";
+ #       rev = version;
+ #       sha256 = "1a3dpawxgi8d2a6w5jzvzm5q13rvqd656ris8mz77gj6f8qp7ddl";
+ #     };
+ #     cargoSha256 = "sha256-z434tTQcl+DjMXdF7jeHvLpNHmmM5eCDijEEk1eLbgg=";
+ #     cargoDeps = super.cargoDeps.overrideAttrs (lib.const {
+ #       name = "${name}-vendor.tar.gz";
+ #       inherit src;
+ #       outputHash = cargoSha256;
+ #     });
+ #   });
+ # };
+
+  # status bar
   services.dwm-status = {
     enable = true;
     order = [ "time" ];
+    # hack until dwm-status is fixed
+    package = pkgs.writeShellScriptBin "dwm-status" ''
+      while true; do
+        ${pkgs.xorg.xsetroot}/bin/xsetroot -name "$(printf '%(%F %R)T')";
+        read -rt $((60-10#$(printf '%(%S)T')%60)) <> <(:) || :
+      done
+    '';
   };
 
   # applets
