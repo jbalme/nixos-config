@@ -7,7 +7,6 @@
     nixpkgs-unstable = { url = "github:NixOS/nixpkgs/nixos-unstable"; };
     home-manager = { url = "github:nix-community/home-manager/master"; };
     nur = { url = "github:nix-community/NUR"; };
-    neovim = { url = "github:neovim/neovim?dir=contrib"; };
     dwm = {
       url = "github:jbalme/dwm/main";
       flake = false;
@@ -25,7 +24,6 @@
   outputs = { self, flake-utils, nixpkgs, nixpkgs-unstable, home-manager, nur
     , ... }@inputs:
     with flake-utils // nixpkgs.lib // builtins; rec {
-      inherit (nixpkgs) packages;
       inherit (nixpkgs) legacyPackages;
 
       overlay = (this: super: {
@@ -46,7 +44,12 @@
               name = (removeSuffix ".nix" n);
               value = import (dir + "/${n}");
             }) (readDir dir);
-      in dToA ./modules // { common = { nixpkgs.overlays = overlays; }; };
+      in dToA ./modules // {
+        common = {
+          nixpkgs.overlays = overlays;
+          nix.registry.nixpkgs.flake = nixpkgs;
+        };
+      };
 
       # Pull in all systems from ./systems
       nixosConfigurations = let

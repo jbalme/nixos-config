@@ -67,7 +67,7 @@ with lib; {
           rev = "76ba6f3c06c0884f4e05fb15388924262b69d6d6";
           sha256 = "sha256-LgU0Msllzc5SIY2JV4SWUCSk2Z4cmHNm0xk/8slYNpc=";
         };
-      in builtins.readFile "${pkgs.flake.userjs}/user.js";
+      in builtins.readFile "${pkgs.inputs.userjs}/user.js";
     };
   };
   home.sessionVariables.BROWSER = "firefox";
@@ -121,21 +121,13 @@ with lib; {
       workbench.colorTheme = "Gruvbox Dark Medium";
       editor.fontFamily = "'Fira Code', 'monospace'";
       editor.fontLigatures = "true";
+      window = { titleBarStyle = "custom"; };
     };
   };
 
   home.sessionVariables.EDITOR = "code -w";
   home.sessionVariables.SUDO_EDITOR = "code -w";
   home.sessionVariables.GIT_EDITOR = "code -w";
-
-  programs.zsh = {
-    enable = true;
-    oh-my-zsh = {
-      enable = true;
-      theme = "awesomepanda";
-    };
-    enableCompletion = true;
-  };
 
   # direnv
   programs.direnv = {
@@ -167,7 +159,7 @@ with lib; {
   # wm
   xsession.enable = true;
   xsession.windowManager.command =
-    let dwm = pkgs.dwm.overrideAttrs (oa: { src = pkgs.flake.dwm; });
+    let dwm = pkgs.dwm.overrideAttrs (oa: { src = pkgs.inputs.dwm; });
     in "${dwm}/bin/dwm";
 
   # autostart

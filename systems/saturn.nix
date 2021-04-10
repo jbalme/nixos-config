@@ -8,12 +8,15 @@ nixosSystem {
       boot.zfs.extraPools = [ "tank" ];
       networking.hostName = "saturn";
       networking.hostId = "b988b583";
-      networking.firewall.allowedTCPPorts = [ 80 443 6443 8080 ];
+      networking.firewall.allowedTCPPorts = [ 80 443 6443 8080 27036 27037 ];
+      networking.firewall.allowedUDPPorts = [ 27031 27036 ];
       nix.maxJobs = 8;
       system.configurationRevision = mkIf (self ? rev) self.rev;
       system.stateVersion = "20.09";
-      services.xserver.displayManager.setupCommands = ''
-        ${pkgs.xorg.xset}/bin/xset led 3
+      services.xserver.displayManager.setupCommands = with pkgs.xorg; ''
+        ${xrandr}/bin/xrandr --output HDMI-A-0 --mode 2560x1440 -r 75 --primary --output DisplayPort-2 --mode 1920x1080 -r 60 --left-of HDMI-A-0
+        ${xset}/bin/xset led 3
+        ${setxkbmap}/bin/setxkbmap -option caps:none
       '';
     })
     hardware.cpu.intel

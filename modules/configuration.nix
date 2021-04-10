@@ -24,7 +24,8 @@ in {
       pathsToLink = [ "/share/zsh" ];
 
       systemPackages = with pkgs;
-        with gnome3; [
+        with gnome3;
+        with gst_all_1; [
           nautilus
           evince
           gnome-calculator
@@ -34,6 +35,11 @@ in {
           evolution
           unzip
           git
+          gst-plugins-base
+          gst-plugins-ugly
+          gst-plugins-good
+          gst-plugins-bad
+          gst-libav
         ];
     };
 
@@ -52,6 +58,7 @@ in {
         ];
         extraPackages32 = extraPackages;
       };
+      pulseaudio = { enable = false; };
     };
 
     services = {
@@ -73,10 +80,10 @@ in {
       dbus = { packages = with pkgs; [ gcr ]; };
 
       gnome3 = {
-        evolution-data-server = { enable = true; };
-        gnome-online-accounts = { enable = true; };
-        gnome-keyring = { enable = true; };
-        sushi = { enable = true; };
+        at-spi2-core = { enable = mkForce false; };
+        gnome-initial-setup = { enable = false; };
+        tracker = { enable = false; };
+        tracker-miners = { enable = false; };
       };
 
       gvfs = { enable = true; };
@@ -124,12 +131,40 @@ in {
             user = "user";
           };
         };
+        desktopManager = {
+          gnome3 = {
+            enable = true;
+            flashback = {
+              enableMetacity = true;
+              #customSessions = [{
+              #  wmName = "dwm";
+              #  wmLabel = "dwm";
+              #  wmCommand = "${pkgs.dwm}/bin/dwm";
+              #}];
+            };
+          };
+        };
       };
 
       zerotierone = { enable = true; };
     };
 
-    programs = { dconf = { enable = true; }; };
+    programs = {
+      dconf = { enable = true; };
+      steam = {
+        enable = true;
+      };
+      zsh = {
+        enable = true;
+        enableBashCompletion = true;
+        autosuggestions = { enable = true; };
+        ohMyZsh = {
+          enable = true;
+          theme = "awesomepanda";
+        };
+        syntaxHighlighting = { enable = true; };
+      };
+    };
 
     sound = { enable = true; };
 
@@ -139,7 +174,11 @@ in {
     time.timeZone = locale.timeZone;
 
     networking = {
-      firewall = { enable = true; };
+      firewall = {
+        enable = true;
+        allowedTCPPorts = [ 27036 27037 ]; # Steam Remote Play
+        allowedUDPPorts = [ 27031 27036 ]; # Steam Remote Play
+      };
       networkmanager.enable = true;
       useDHCP = false; # legacy flag
     };
@@ -155,6 +194,13 @@ in {
       vistafonts
       winePackages.fonts
     ];
+
+    security = {
+      pam = {
+        services =
+          lib.genAttrs [ "lightdm" "gdm" ] (a: { enableGnomeKeyring = true; });
+      };
+    };
 
     virtualisation = {
       docker.enable = true;

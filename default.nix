@@ -1,4 +1,4 @@
-{system ? builtins.currentSystem,...}:
+{ system ? builtins.currentSystem, ... }:
 let
   outputs = (import
     (let lock = builtins.fromJSON (builtins.readFile ./flake.lock);
