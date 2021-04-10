@@ -4,7 +4,6 @@
   inputs = {
     flake-utils = { url = "github:numtide/flake-utils"; };
     nixpkgs = { url = "github:NixOS/nixpkgs/nixos-unstable"; };
-    nixpkgs-unstable = { url = "github:NixOS/nixpkgs/nixos-unstable"; };
     home-manager = { url = "github:nix-community/home-manager/master"; };
     nur = { url = "github:nix-community/NUR"; };
     dwm = {
@@ -21,7 +20,7 @@
     };
   };
 
-  outputs = { self, flake-utils, nixpkgs, nixpkgs-unstable, home-manager, nur
+  outputs = { self, flake-utils, nixpkgs, home-manager, nur
     , ... }@inputs:
     with flake-utils // nixpkgs.lib // builtins; rec {
       inherit (nixpkgs) legacyPackages;
