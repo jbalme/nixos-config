@@ -7,6 +7,7 @@ nixosSystem {
     {
       system.configurationRevision = mkIf (self ? rev) self.rev;
       networking.hostName = "neptune";
+      networking.hostId = "b78f0031";
       system.stateVersion = "20.09";
       nix.maxJobs = 4;
     }

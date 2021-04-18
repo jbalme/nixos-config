@@ -13,7 +13,17 @@ in {
       extraOptions = "experimental-features = nix-command flakes";
     };
 
-    nixpkgs = { config.allowUnfree = true; };
+    nixpkgs = { 
+      config = { allowUnfree = true; };
+      overlays = [
+        (this: super: rec {
+          steam = super.steam.override {
+            extraLibraries = pkgs: with pkgs; [ fuse appimage-run ];
+          };
+          steam-run = steam.run;
+        })
+      ];
+    };
 
     boot = {
       kernel = { sysctl = { "kernel.sysrq" = 1; }; };
@@ -153,6 +163,9 @@ in {
       dconf = { enable = true; };
       steam = {
         enable = true;
+        remotePlay = {
+          openFirewall = true;
+        };
       };
       zsh = {
         enable = true;
@@ -163,6 +176,9 @@ in {
           theme = "awesomepanda";
         };
         syntaxHighlighting = { enable = true; };
+        shellInit = ''
+            eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
+        '';
       };
     };
 

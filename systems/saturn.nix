@@ -18,6 +18,21 @@ nixosSystem {
         ${xset}/bin/xset led 3
         ${setxkbmap}/bin/setxkbmap -option caps:none
       '';
+      services.jenkins = {
+        enable = true;
+        extraJavaOptions = [
+          "-Xms80m"
+          "-Xmx256m"
+        ];
+        packages = with pkgs; [
+          stdenv
+          git
+          jdk
+          nodejs
+          nodePackages.npm
+        ];
+        port = 6969;
+      };
     })
     hardware.cpu.intel
     hardware.disks.boot
