@@ -20,8 +20,7 @@
     };
   };
 
-  outputs = { self, flake-utils, nixpkgs, home-manager, nur
-    , ... }@inputs:
+  outputs = { self, flake-utils, nixpkgs, home-manager, nur, ... }@inputs:
     with flake-utils // nixpkgs.lib // builtins; rec {
       inherit (nixpkgs) legacyPackages;
 

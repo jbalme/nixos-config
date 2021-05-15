@@ -13,14 +13,10 @@ in {
       extraOptions = "experimental-features = nix-command flakes";
     };
 
-    nixpkgs = { 
+    nixpkgs = {
       config = { allowUnfree = true; };
       overlays = [
         (this: super: rec {
-          steam = super.steam.override {
-            extraLibraries = pkgs: with pkgs; [ fuse appimage-run ];
-          };
-          steam-run = steam.run;
         })
       ];
     };
@@ -68,7 +64,20 @@ in {
         ];
         extraPackages32 = extraPackages;
       };
+      printers = {
+        ensurePrinters = [{
+          name = "OfficeJet_6600";
+          model = "HP/hp-officejet_6600.ppd.gz";
+          deviceUri = "hp:/net/Officejet_6600?hostname=HPD4C9EF79CBE0.local";
+        }];
+        ensureDefaultPrinter = "OfficeJet_6600";
+      };
       pulseaudio = { enable = false; };
+      sane = {
+        enable = true;
+        extraBackends = with pkgs; [ sane-airscan hplip ];
+        netConf = "HPD4C9EF79CBE0.local";
+      };
     };
 
     services = {
@@ -89,7 +98,7 @@ in {
 
       dbus = { packages = with pkgs; [ gcr ]; };
 
-      gnome3 = {
+      gnome = {
         at-spi2-core = { enable = mkForce false; };
         gnome-initial-setup = { enable = false; };
         tracker = { enable = false; };
@@ -112,9 +121,24 @@ in {
           enable = true;
           support32Bit = true;
         };
+        media-session = {
+          config = {
+            alsa-monitor = {
+              api = {
+                alsa = {
+                  use-ucm = true;
+                  headroom = 1024;
+                };
+              };
+            };
+          };
+        };
       };
 
-      printing = { enable = true; };
+      printing = {
+        enable = true;
+        drivers = with pkgs; [ gutenprint hplip ];
+      };
 
       ratbagd = { enable = true; };
 
@@ -142,7 +166,7 @@ in {
           };
         };
         desktopManager = {
-          gnome3 = {
+          gnome = {
             enable = true;
             flashback = {
               enableMetacity = true;
@@ -154,6 +178,8 @@ in {
             };
           };
         };
+
+        xkbOptions = "caps:none";
       };
 
       zerotierone = { enable = true; };
@@ -163,9 +189,7 @@ in {
       dconf = { enable = true; };
       steam = {
         enable = true;
-        remotePlay = {
-          openFirewall = true;
-        };
+        remotePlay = { openFirewall = true; };
       };
       zsh = {
         enable = true;
@@ -177,7 +201,7 @@ in {
         };
         syntaxHighlighting = { enable = true; };
         shellInit = ''
-            eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
+          eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
         '';
       };
     };
@@ -192,8 +216,6 @@ in {
     networking = {
       firewall = {
         enable = true;
-        allowedTCPPorts = [ 27036 27037 ]; # Steam Remote Play
-        allowedUDPPorts = [ 27031 27036 ]; # Steam Remote Play
       };
       networkmanager.enable = true;
       useDHCP = false; # legacy flag
@@ -229,7 +251,8 @@ in {
 
     users.users.user = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "networkmanager" "docker" "libvirtd" ];
+      extraGroups =
+        [ "wheel" "networkmanager" "docker" "libvirtd" "scanner" "lp" ];
       shell = pkgs.zsh;
     };
 

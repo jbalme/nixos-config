@@ -168,4 +168,6 @@ with lib; {
   '';
 
   manual.manpages.enable = false;
+
+
 }

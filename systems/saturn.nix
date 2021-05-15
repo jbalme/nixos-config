@@ -20,17 +20,8 @@ nixosSystem {
       '';
       services.jenkins = {
         enable = true;
-        extraJavaOptions = [
-          "-Xms80m"
-          "-Xmx256m"
-        ];
-        packages = with pkgs; [
-          stdenv
-          git
-          jdk
-          nodejs
-          nodePackages.npm
-        ];
+        extraJavaOptions = [ "-Xms80m" "-Xmx256m" ];
+        packages = with pkgs; [ stdenv git jdk nodejs nodePackages.npm newman ];
         port = 6969;
       };
     })
