@@ -17,6 +17,11 @@ in {
       config = { allowUnfree = true; };
       overlays = [
         (this: super: rec {
+          steam = super.steam.override {
+            extraLibraries = (pkgs: with pkgs; [
+              #json-glib
+            ]);
+          };
         })
       ];
     };
@@ -120,6 +125,17 @@ in {
         alsa = {
           enable = true;
           support32Bit = true;
+        };
+        config = {
+          pipewire = {
+            default = {
+              clock = {
+                quantum = 32;
+                min-quantum = 32;
+                max-quantum = 768;
+              };
+            };
+          };
         };
         media-session = {
           config = {
